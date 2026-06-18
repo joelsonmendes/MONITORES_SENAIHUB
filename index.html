@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="PWA para gestão das demandas dos monitores da elétrica." />
+  <title>Monitor Elétrica SENAI HUB</title>
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="icon" type="image/png" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="splash" class="splash">
+    <img src="./icons/icon-192.png" alt="Logo Monitor Elétrica" />
+    <h1>Monitor Elétrica</h1>
+    <p>Gestão de demandas da área de elétrica</p>
+  </div>
+
+  <main id="app" class="app hidden">
+    <section id="loginView" class="login-shell">
+      <div class="login-card glass">
+        <div class="brand">
+          <img src="./icons/icon-192.png" alt="Logo do aplicativo" />
+          <div>
+            <h1>Monitor Elétrica</h1>
+            <p>SENAI HUB · Gestão de Demandas</p>
+          </div>
+        </div>
+
+        <form id="loginForm" class="form-grid">
+          <label>
+            E-mail
+            <input id="loginEmail" type="email" autocomplete="email" placeholder="seuemail@exemplo.com" required />
+          </label>
+
+          <label>
+            Senha
+            <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha" required />
+          </label>
+
+          <button class="btn primary" type="submit">Entrar no aplicativo</button>
+        </form>
+
+        <div class="demo-box">
+          <strong>Modo demonstração local</strong>
+          <p>Enquanto o Firebase não for configurado, use os acessos abaixo para testar no navegador.</p>
+          <div class="demo-buttons">
+            <button class="btn ghost small demo-login" data-email="jmm.engiot@gmail.com" data-password="123456">Entrar como Coordenador</button>
+            <button class="btn ghost small demo-login" data-email="larissa.eletrica@senai.local" data-password="123456">Larissa</button>
+            <button class="btn ghost small demo-login" data-email="maysa.eletrica@senai.local" data-password="123456">Maysa</button>
+            <button class="btn ghost small demo-login" data-email="gabriel.eletrica@senai.local" data-password="123456">Gabriel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mainView" class="main-shell hidden">
+      <aside class="sidebar">
+        <div class="side-brand">
+          <img src="./icons/icon-192.png" alt="Logo" />
+          <div>
+            <strong>Monitor Elétrica</strong>
+            <span>SENAI HUB</span>
+          </div>
+        </div>
+
+        <nav id="navMenu" class="nav-menu"></nav>
+
+        <button id="installBtn" class="btn install hidden">Instalar no celular</button>
+        <button id="notifyPermissionBtn" class="btn ghost">Ativar notificações</button>
+        <button id="logoutBtn" class="btn danger ghost">Sair</button>
+      </aside>
+
+      <section class="content-shell">
+        <header class="topbar">
+          <button id="menuToggle" class="icon-btn" aria-label="Abrir menu">☰</button>
+          <div>
+            <h2 id="pageTitle">Dashboard</h2>
+            <p id="pageSubtitle">Acompanhamento geral das demandas</p>
+          </div>
+          <div class="user-pill">
+            <span id="modeBadge" class="badge neutral">Local</span>
+            <span id="userName">Usuário</span>
+          </div>
+        </header>
+
+        <div id="alertArea" class="alert-area"></div>
+
+        <section id="dashboardPage" class="page"></section>
+        <section id="tasksPage" class="page hidden"></section>
+        <section id="newTaskPage" class="page hidden"></section>
+        <section id="monitorsPage" class="page hidden"></section>
+        <section id="notificationsPage" class="page hidden"></section>
+        <section id="reportsPage" class="page hidden"></section>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="taskDialog" class="dialog">
+    <form method="dialog" class="dialog-card">
+      <button class="dialog-close" value="cancel" aria-label="Fechar">×</button>
+      <div id="taskDialogContent"></div>
+    </form>
+  </dialog>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

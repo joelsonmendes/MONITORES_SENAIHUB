@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.uid))
+        && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.perfil == "admin";
+    }
+
+    function isActiveUser() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.uid))
+        && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.ativo == true;
+    }
+
+    match /usuarios/{userId} {
+      allow read: if isActiveUser();
+      allow create, update, delete: if isAdmin() || request.auth.uid == userId;
+    }
+
+    match /demandas/{demandaId} {
+      allow read: if isAdmin() || (isActiveUser() && resource.data.responsavelUid == request.auth.uid);
+      allow create: if isAdmin();
+      allow update: if isAdmin() || (isActiveUser() && resource.data.responsavelUid == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+
+    match /notificacoes/{notificacaoId} {
+      allow read: if isAdmin() || (isActiveUser() && resource.data.usuarioUid == request.auth.uid);
+      allow create: if isAdmin() || isActiveUser();
+      allow update: if isAdmin() || (isActiveUser() && resource.data.usuarioUid == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+  }
+}
